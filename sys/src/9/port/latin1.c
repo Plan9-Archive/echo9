@@ -19,7 +19,7 @@ struct cvlist
 	char	*si;		/* options for last input characters */
 	Rune	*so;		/* the corresponding Rune for each si entry */
 } latintab[] = {
-#include "../port/latin1.h"
+//EBC #include "../port/latin1.h"
 	0,	0,		0
 };
 
