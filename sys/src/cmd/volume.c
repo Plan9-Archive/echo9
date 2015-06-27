@@ -10,7 +10,7 @@ Image *rim;
 
 Point
 volumept(Point c, int volume, int r) {
-	double rad = (double) (volume*3.0+30) * PI/180.0;
+	double rad = (double) (((volume-50)*2.0)*3.0+30) * PI/180.0;
 
 	c.x -= sin(rad) * r;
 	c.y += cos(rad) * r;
@@ -25,7 +25,7 @@ redraw(Image *screen)
 
 	draw(screen, screen->r, back, nil, ZP);
 	
-	line(screen, volumept(c, 0, 45), volumept(c, 0, 40), 0, 0, 1, display->black, ZP);
+	line(screen, volumept(c, 50, 45), volumept(c, 50, 40), 0, 0, 1, display->black, ZP);
 	line(screen, volumept(c, 100, 45), volumept(c, 100, 40), 0, 0, 1, display->black, ZP);
 	ellipse(screen, c, 40, 40, 1, rim, ZP);
 	fillellipse(screen, volumept(c, volume, 30), 3, 3, knob, ZP);
@@ -44,7 +44,9 @@ eresized(int new)
 
 void
 main()
-{	Mouse m;
+{
+	int key;
+	Mouse m;
 	Event e;
 	int f;
 	char buf[256];
@@ -52,7 +54,6 @@ main()
 	Point p;
 	double rad;
 	int d;
-	int Etimer;
 
 	f = open("/dev/volume", ORDWR);
 	if (f < 0)
@@ -67,7 +68,6 @@ main()
 		sysfatal ("initdraw failed");
 
 	einit (Emouse);
-	Etimer = etimer(0, 1000);
 
 	back = allocimagemix (display, 0x88FF88FF, DWhite);
 	knob = allocimage (display, Rect(0,0,1,1), CMAP8, 1, 0x008800FF);
@@ -76,8 +76,9 @@ main()
 	redraw(screen);
 
 	for (;;) {
-		switch(eread(Emouse|Etimer, &e)){
-		case Emouse:
+		key = event(&e);
+
+		if(key == Emouse) {
 			m = e.mouse;
 			if(m.buttons & 1) {
 				p = subpt(m.xy, divpt(addpt(screen->r.min, screen->r.max), 2));
@@ -86,16 +87,12 @@ main()
 				if (d < 0)
 					d += 360;
 
-				d *= 160.0/360.0;
-
 				if (d < 30)
-					d = 0;
-				else if (d > 130)
-					d = 100;
+					volume = 50;
+				else if (d > 330)
+					volume = 100;
 				else
-					d -= 30;
-
-				volume = d;
+					volume = 50 + (((d-30)/300.0)*50.0);
 
 				fprint (f, "%d\n", volume);
 
@@ -103,19 +100,6 @@ main()
 
 				sleep(50);
 			}
-			break;
-		default:
-			close(f);
-			f = open("/dev/volume", ORDWR);
-
-			read (f, buf, sizeof(buf));
-			strtok(buf, " ");
-			ptr = strtok(nil, " ");
-			volume = atoi(ptr);
-
-			redraw(screen);
-
-			break;
 		}
 	}
 }
