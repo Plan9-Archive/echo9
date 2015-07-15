@@ -54,6 +54,7 @@ main()
 	Point p;
 	double rad;
 	int d;
+	int timer;
 
 	f = open("/dev/volume", ORDWR);
 	if (f < 0)
@@ -68,6 +69,7 @@ main()
 		sysfatal ("initdraw failed");
 
 	einit (Emouse);
+	timer = etimer(0, 1000);
 
 	back = allocimagemix (display, 0x88FF88FF, DWhite);
 	knob = allocimage (display, Rect(0,0,1,1), CMAP8, 1, 0x008800FF);
@@ -100,6 +102,18 @@ main()
 
 				sleep(50);
 			}
+		} else if(key == timer) {
+			close(f);
+			f = open("/dev/volume", ORDWR);
+			if (f < 0)
+				sysfatal ("open volume failed");
+
+			read (f, buf, sizeof(buf));
+			strtok(buf, " ");
+			ptr = strtok(nil, " ");
+			volume = atoi(ptr);
+
+			redraw(screen);
 		}
 	}
 }
