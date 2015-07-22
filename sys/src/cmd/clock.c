@@ -1,12 +1,3 @@
-/* 
- * This file is part of the UCB release of Plan 9. It is subject to the license
- * terms in the LICENSE file found in the top-level directory of this
- * distribution and at http://akaros.cs.berkeley.edu/files/Plan9License. No
- * part of the UCB release of Plan 9, including this file, may be copied,
- * modified, propagated, or distributed except according to the terms contained
- * in the LICENSE file.
- */
-
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
@@ -14,6 +5,7 @@
 
 Image *hrhand, *minhand;
 Image *dots, *back;
+Font *mediumfont;
 
 Point
 circlept(Point c, int r, int degrees)
@@ -37,6 +29,7 @@ redraw(Image *screen)
 	int anghr, angmin;
 	static Tm tms;
 	static Tm ntms;
+	Rune symbol[2];
 
 	ntm = time(0);
 	if(ntm == tm && eqrect(screen->r, r))
@@ -55,7 +48,10 @@ redraw(Image *screen)
 
 	draw(screen, screen->r, back, nil, ZP);
 	for(i=0; i<12; i++)
-		fillellipse(screen, circlept(c, rad, i*(360/12)), 2, 2, dots, ZP);
+	{
+		runesprint (symbol, "%C", 0x2160 + i);
+		runestring (screen, subpt(circlept(c, rad, -i*(360/12) + 60), Pt(4,9)), dots, ZP, mediumfont, symbol);
+	}
 
 	line(screen, c, circlept(c, (rad*3)/4, angmin), 0, 0, 1, minhand, ZP);
 	line(screen, c, circlept(c, rad/2, anghr), 0, 0, 1, hrhand, ZP);
@@ -88,6 +84,8 @@ main(int, char**)
 	hrhand = allocimage(display, Rect(0,0,1,1), CMAP8, 1, DDarkblue);
 	minhand = allocimage(display, Rect(0,0,1,1), CMAP8, 1, DPaleblue);
 	dots = allocimage(display, Rect(0,0,1,1), CMAP8, 1, DBlue);
+
+	mediumfont = openfont(display, "/lib/font/bit/fixed/unicode.9x18.font");
 	redraw(screen);
 
 	einit(Emouse);
