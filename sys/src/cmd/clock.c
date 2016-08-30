@@ -49,6 +49,7 @@ redraw(Image *screen)
 	draw(screen, screen->r, back, nil, ZP);
 	for(i=0; i<12; i++)
 	{
+		fillellipse(screen, circlept(c, rad * 0.9, i*(360/12)), 2, 2, dots, ZP);
 		runesprint (symbol, "%C", 0x2160 + i);
 		runestring (screen, subpt(circlept(c, rad, -i*(360/12) + 60), Pt(4,9)), dots, ZP, mediumfont, symbol);
 	}
