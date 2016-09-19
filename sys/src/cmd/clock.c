@@ -47,11 +47,11 @@ redraw(Image *screen)
 	rad -= 8;
 
 	draw(screen, screen->r, back, nil, ZP);
-	for(i=0; i<12; i++)
+	for(i=1; i<=12; i++)
 	{
-		fillellipse(screen, circlept(c, rad * 0.9, i*(360/12)), 2, 2, dots, ZP);
-		runesprint (symbol, "%C", 0x2160 + i);
-		runestring (screen, subpt(circlept(c, rad, -i*(360/12) + 60), Pt(4,9)), dots, ZP, mediumfont, symbol);
+		fillellipse(screen, circlept(c, rad * 0.86, i*(360/12)), 2, 2, dots, ZP);
+		runesprint (symbol, "%C", 0x2160 - 1 + i);
+		runestring (screen, subpt(circlept(c, rad, -i*(360/12)+90), Pt(4,9)), dots, ZP, mediumfont, symbol);
 	}
 
 	line(screen, c, circlept(c, (rad*3)/4, angmin), 0, 0, 1, minhand, ZP);
