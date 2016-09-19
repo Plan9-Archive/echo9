@@ -22,13 +22,15 @@ void
 redraw(Image *screen)
 {
 	Point c = divpt(addpt(screen->r.min, screen->r.max), 2);
+	Point winsize = subpt(screen->r.max, screen->r.min);
+	int r = winsize.x > winsize.y? winsize.y/4: winsize.x/4;
 
 	draw(screen, screen->r, back, nil, ZP);
 	
-	line(screen, volumept(c, 50, 45), volumept(c, 50, 40), 0, 0, 1, display->black, ZP);
-	line(screen, volumept(c, 100, 45), volumept(c, 100, 40), 0, 0, 1, display->black, ZP);
-	ellipse(screen, c, 40, 40, 1, rim, ZP);
-	fillellipse(screen, volumept(c, volume, 30), 3, 3, knob, ZP);
+	line(screen, volumept(c, 50, r+5), volumept(c, 50, r), 0, 0, 1, display->black, ZP);
+	line(screen, volumept(c, 100, r+5), volumept(c, 100, r), 0, 0, 1, display->black, ZP);
+	ellipse(screen, c, r, r, 1, rim, ZP);
+	fillellipse(screen, volumept(c, volume, r-10), 3, 3, knob, ZP);
 
 	flushimage(display, 1);
 }
