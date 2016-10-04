@@ -49,8 +49,8 @@ Reglist amd64reglist[] = {
 	{"TYPE",	REGOFF(type), 	RINT, 'Y'},
 	{"TRAP",	REGOFF(type), 	RINT, 'Y'},	/* alias for acid */
 	{"ERROR",	REGOFF(error),	RINT, 'Y'},
-	{"IP",		REGOFF(ip),	RINT, 'Y'},
-	{"PC",		REGOFF(ip),	RINT, 'Y'},	/* alias for acid */
+//	{"IP",		REGOFF(ip),	RINT, 'Y'},							EBC
+//	{"PC",		REGOFF(ip),	RINT, 'Y'},	/* alias for acid */
 	{"CS",		REGOFF(cs),	RINT, 'Y'},
 	{"FLAGS",	REGOFF(flags),	RINT, 'Y'},
 	{"SP",		REGOFF(sp),	RINT, 'Y'},

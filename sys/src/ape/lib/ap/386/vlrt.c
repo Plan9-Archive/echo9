@@ -127,6 +127,12 @@ _v2d(Vlong x)
 	return (long)x.hi*4294967296. + x.lo;
 }
 
+double
+_uv2d(Vlong x)
+{
+	return x.hi*4294967296. + x.lo;
+}
+
 float
 _v2f(Vlong x)
 {
