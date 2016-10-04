@@ -245,6 +245,8 @@ long	yytok3[] =
 {
    0
 };
+
+#line	1	"/sys/lib/yaccpars"
 #define YYFLAG 		-1000
 #define YYERROR		goto yyerrlab
 #define YYACCEPT	return(0)

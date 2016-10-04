@@ -33,8 +33,8 @@
 
 	 /* ---------------- Cache sizes ---------------- */
 
-#define ARCH_CACHE1_SIZE 4096
-#define ARCH_CACHE2_SIZE 32768
+#define ARCH_CACHE1_SIZE 4194304
+#define ARCH_CACHE2_SIZE 4194304
 
 	 /* ---------------- Miscellaneous ---------------- */
 

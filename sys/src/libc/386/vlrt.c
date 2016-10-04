@@ -122,6 +122,12 @@ _v2f(Vlong x)
 	return _v2d(x);
 }
 
+double
+_uv2d(Vlong x)
+{
+	return x.hi*4294967296. + x.lo;
+}
+
 ulong	_div64by32(Vlong, ulong, ulong*);
 int	_mul64by32(Vlong*, Vlong, ulong);
 
