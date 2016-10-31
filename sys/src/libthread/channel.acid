@@ -37,34 +37,34 @@ Runeself = 128;
 Runeerror = 65533;
 Runemax = 1114111;
 Runemask = 2097151;
-sizeofFmt = 48;
+sizeofFmt = 80;
 aggr Fmt
 {
 	'b' 0 runes;
-	'X' 4 start;
-	'X' 8 to;
-	'X' 12 stop;
-	'X' 16 flush;
-	'X' 20 farg;
-	'D' 24 nfmt;
-	'X' 28 args;
-	'D' 32 r;
-	'D' 36 width;
-	'D' 40 prec;
-	'U' 44 flags;
+	'Y' 8 start;
+	'Y' 16 to;
+	'Y' 24 stop;
+	'Y' 32 flush;
+	'Y' 40 farg;
+	'D' 48 nfmt;
+	'Y' 56 args;
+	'D' 64 r;
+	'D' 68 width;
+	'D' 72 prec;
+	'U' 76 flags;
 };
 
 defn
 Fmt(addr) {
 	complex Fmt addr;
 	print("	runes	", addr.runes, "\n");
-	print("	start	", addr.start\X, "\n");
-	print("	to	", addr.to\X, "\n");
-	print("	stop	", addr.stop\X, "\n");
-	print("	flush	", addr.flush\X, "\n");
-	print("	farg	", addr.farg\X, "\n");
+	print("	start	", addr.start\Y, "\n");
+	print("	to	", addr.to\Y, "\n");
+	print("	stop	", addr.stop\Y, "\n");
+	print("	flush	", addr.flush\Y, "\n");
+	print("	farg	", addr.farg\Y, "\n");
 	print("	nfmt	", addr.nfmt, "\n");
-	print("	args	", addr.args\X, "\n");
+	print("	args	", addr.args\Y, "\n");
 	print("	r	", addr.r, "\n");
 	print("	width	", addr.width, "\n");
 	print("	prec	", addr.prec, "\n");
@@ -136,29 +136,29 @@ Lock(addr) {
 	print("	sem	", addr.sem, "\n");
 };
 
-sizeofQLp = 12;
+sizeofQLp = 24;
 aggr QLp
 {
 	'D' 0 inuse;
-	'A' QLp 4 next;
-	'C' 8 state;
+	'A' QLp 8 next;
+	'C' 16 state;
 };
 
 defn
 QLp(addr) {
 	complex QLp addr;
 	print("	inuse	", addr.inuse, "\n");
-	print("	next	", addr.next\X, "\n");
+	print("	next	", addr.next\Y, "\n");
 	print("	state	", addr.state, "\n");
 };
 
-sizeofQLock = 20;
+sizeofQLock = 32;
 aggr QLock
 {
 	Lock 0 lock;
 	'D' 8 locked;
-	'A' QLp 12 $head;
-	'A' QLp 16 $tail;
+	'A' QLp 16 $head;
+	'A' QLp 24 $tail;
 };
 
 defn
@@ -168,18 +168,18 @@ QLock(addr) {
 	Lock(addr.lock);
 	print("}\n");
 	print("	locked	", addr.locked, "\n");
-	print("	$head	", addr.$head\X, "\n");
-	print("	$tail	", addr.$tail\X, "\n");
+	print("	$head	", addr.$head\Y, "\n");
+	print("	$tail	", addr.$tail\Y, "\n");
 };
 
-sizeofRWLock = 24;
+sizeofRWLock = 32;
 aggr RWLock
 {
 	Lock 0 lock;
 	'D' 8 readers;
 	'D' 12 writer;
 	'A' QLp 16 $head;
-	'A' QLp 20 $tail;
+	'A' QLp 24 $tail;
 };
 
 defn
@@ -190,52 +190,52 @@ RWLock(addr) {
 	print("}\n");
 	print("	readers	", addr.readers, "\n");
 	print("	writer	", addr.writer, "\n");
-	print("	$head	", addr.$head\X, "\n");
-	print("	$tail	", addr.$tail\X, "\n");
+	print("	$head	", addr.$head\Y, "\n");
+	print("	$tail	", addr.$tail\Y, "\n");
 };
 
-sizeofRendez = 12;
+sizeofRendez = 24;
 aggr Rendez
 {
 	'A' QLock 0 l;
-	'A' QLp 4 $head;
-	'A' QLp 8 $tail;
+	'A' QLp 8 $head;
+	'A' QLp 16 $tail;
 };
 
 defn
 Rendez(addr) {
 	complex Rendez addr;
-	print("	l	", addr.l\X, "\n");
-	print("	$head	", addr.$head\X, "\n");
-	print("	$tail	", addr.$tail\X, "\n");
+	print("	l	", addr.l\Y, "\n");
+	print("	$head	", addr.$head\Y, "\n");
+	print("	$tail	", addr.$tail\Y, "\n");
 };
 
-sizeofNetConnInfo = 36;
+sizeofNetConnInfo = 72;
 aggr NetConnInfo
 {
-	'X' 0 dir;
-	'X' 4 root;
-	'X' 8 spec;
-	'X' 12 lsys;
-	'X' 16 lserv;
-	'X' 20 rsys;
-	'X' 24 rserv;
-	'X' 28 laddr;
-	'X' 32 raddr;
+	'Y' 0 dir;
+	'Y' 8 root;
+	'Y' 16 spec;
+	'Y' 24 lsys;
+	'Y' 32 lserv;
+	'Y' 40 rsys;
+	'Y' 48 rserv;
+	'Y' 56 laddr;
+	'Y' 64 raddr;
 };
 
 defn
 NetConnInfo(addr) {
 	complex NetConnInfo addr;
-	print("	dir	", addr.dir\X, "\n");
-	print("	root	", addr.root\X, "\n");
-	print("	spec	", addr.spec\X, "\n");
-	print("	lsys	", addr.lsys\X, "\n");
-	print("	lserv	", addr.lserv\X, "\n");
-	print("	rsys	", addr.rsys\X, "\n");
-	print("	rserv	", addr.rserv\X, "\n");
-	print("	laddr	", addr.laddr\X, "\n");
-	print("	raddr	", addr.raddr\X, "\n");
+	print("	dir	", addr.dir\Y, "\n");
+	print("	root	", addr.root\Y, "\n");
+	print("	spec	", addr.spec\Y, "\n");
+	print("	lsys	", addr.lsys\Y, "\n");
+	print("	lserv	", addr.lserv\Y, "\n");
+	print("	rsys	", addr.rsys\Y, "\n");
+	print("	rserv	", addr.rserv\Y, "\n");
+	print("	laddr	", addr.laddr\Y, "\n");
+	print("	raddr	", addr.raddr\Y, "\n");
 };
 
 RFNAMEG = 1;
@@ -266,7 +266,7 @@ Qid(addr) {
 	print("	type	", addr.type, "\n");
 };
 
-sizeofDir = 60;
+sizeofDir = 80;
 aggr Dir
 {
 	'u' 0 type;
@@ -275,11 +275,11 @@ aggr Dir
 	'U' 24 mode;
 	'U' 28 atime;
 	'U' 32 mtime;
-	'V' 36 length;
-	'X' 44 name;
-	'X' 48 uid;
-	'X' 52 gid;
-	'X' 56 muid;
+	'V' 40 length;
+	'Y' 48 name;
+	'Y' 56 uid;
+	'Y' 64 gid;
+	'Y' 72 muid;
 };
 
 defn
@@ -294,18 +294,18 @@ Dir(addr) {
 	print("	atime	", addr.atime, "\n");
 	print("	mtime	", addr.mtime, "\n");
 	print("	length	", addr.length, "\n");
-	print("	name	", addr.name\X, "\n");
-	print("	uid	", addr.uid\X, "\n");
-	print("	gid	", addr.gid\X, "\n");
-	print("	muid	", addr.muid\X, "\n");
+	print("	name	", addr.name\Y, "\n");
+	print("	uid	", addr.uid\Y, "\n");
+	print("	gid	", addr.gid\Y, "\n");
+	print("	muid	", addr.muid\Y, "\n");
 };
 
-sizeofWaitmsg = 20;
+sizeofWaitmsg = 24;
 aggr Waitmsg
 {
 	'D' 0 pid;
 	'a' 4 time;
-	'X' 16 msg;
+	'Y' 16 msg;
 };
 
 defn
@@ -313,20 +313,20 @@ Waitmsg(addr) {
 	complex Waitmsg addr;
 	print("	pid	", addr.pid, "\n");
 	print("	time	", addr.time, "\n");
-	print("	msg	", addr.msg\X, "\n");
+	print("	msg	", addr.msg\Y, "\n");
 };
 
-sizeofIOchunk = 8;
+sizeofIOchunk = 16;
 aggr IOchunk
 {
-	'X' 0 addr;
-	'U' 4 len;
+	'Y' 0 addr;
+	'U' 8 len;
 };
 
 defn
 IOchunk(addr) {
 	complex IOchunk addr;
-	print("	addr	", addr.addr\X, "\n");
+	print("	addr	", addr.addr\Y, "\n");
 	print("	len	", addr.len, "\n");
 };
 
@@ -334,7 +334,7 @@ Nqwds = 2;
 Nqshift = 5;
 Nqmask = -1;
 Nqbits = 64;
-sizeofChannel = 36;
+sizeofChannel = 48;
 aggr Channel
 {
 	'D' 0 s;
@@ -342,10 +342,10 @@ aggr Channel
 	'U' 8 n;
 	'D' 12 e;
 	'D' 16 freed;
-	'X' 20 qentry;
-	'D' 24 nentry;
-	'D' 28 closed;
-	'a' 32 v;
+	'Y' 24 qentry;
+	'D' 32 nentry;
+	'D' 36 closed;
+	'a' 40 v;
 };
 
 defn
@@ -356,7 +356,7 @@ Channel(addr) {
 	print("	n	", addr.n, "\n");
 	print("	e	", addr.e, "\n");
 	print("	freed	", addr.freed, "\n");
-	print("	qentry	", addr.qentry\X, "\n");
+	print("	qentry	", addr.qentry\Y, "\n");
 	print("	nentry	", addr.nentry, "\n");
 	print("	closed	", addr.closed, "\n");
 	print("	v	", addr.v, "\n");
@@ -367,29 +367,29 @@ CHANSND = 1;
 CHANRCV = 2;
 CHANNOP = 3;
 CHANNOBLK = 4;
-sizeofAlt = 24;
+sizeofAlt = 48;
 aggr Alt
 {
 	'A' Channel 0 c;
-	'X' 4 v;
-	'D' 8 op;
-	'X' 12 err;
-	'A' Channel 16 tag;
-	'D' 20 entryno;
+	'Y' 8 v;
+	'D' 16 op;
+	'Y' 24 err;
+	'A' Channel 32 tag;
+	'D' 40 entryno;
 };
 
 defn
 Alt(addr) {
 	complex Alt addr;
-	print("	c	", addr.c\X, "\n");
-	print("	v	", addr.v\X, "\n");
+	print("	c	", addr.c\Y, "\n");
+	print("	v	", addr.v\Y, "\n");
 	print("	op	", addr.op, "\n");
-	print("	err	", addr.err\X, "\n");
-	print("	tag	", addr.tag\X, "\n");
+	print("	err	", addr.err\Y, "\n");
+	print("	tag	", addr.tag\Y, "\n");
 	print("	entryno	", addr.entryno, "\n");
 };
 
-sizeofRef = 4;
+sizeofRef = 8;
 aggr Ref
 {
 	'D' 0 ref;
@@ -412,7 +412,7 @@ Chanrecv = 3;
 RENDHASH = 13;
 Printsize = 2048;
 NPRIV = 8;
-sizeofRgrp = 60;
+sizeofRgrp = 112;
 aggr Rgrp
 {
 	Lock 0 lock;
@@ -428,47 +428,47 @@ Rgrp(addr) {
 	print("	hash	", addr.hash, "\n");
 };
 
-sizeofTqueue = 12;
+sizeofTqueue = 24;
 aggr Tqueue
 {
 	'D' 0 asleep;
-	'X' 4 $head;
-	'X' 8 $tail;
+	'Y' 8 $head;
+	'Y' 16 $tail;
 };
 
 defn
 Tqueue(addr) {
 	complex Tqueue addr;
 	print("	asleep	", addr.asleep, "\n");
-	print("	$head	", addr.$head\X, "\n");
-	print("	$tail	", addr.$tail\X, "\n");
+	print("	$head	", addr.$head\Y, "\n");
+	print("	$tail	", addr.$tail\Y, "\n");
 };
 
-sizeofThread = 124;
+sizeofThread = 216;
 aggr Thread
 {
 	Lock 0 lock;
 	'a' 8 sched;
-	'D' 16 id;
-	'D' 20 grp;
-	'D' 24 moribund;
-	'D' 28 state;
-	'D' 32 nextstate;
-	'X' 36 stk;
-	'U' 40 stksize;
-	'A' Thread 44 next;
-	'X' 48 proc;
-	'A' Thread 52 nextt;
-	'D' 56 ret;
-	'X' 60 cmdname;
-	'D' 64 inrendez;
-	'A' Thread 68 rendhash;
-	'X' 72 rendtag;
-	'X' 76 rendval;
-	'D' 80 rendbreak;
-	'D' 84 chan;
-	'A' Alt 88 alt;
-	'a' 92 udata;
+	'D' 24 id;
+	'D' 28 grp;
+	'D' 32 moribund;
+	'D' 36 state;
+	'D' 40 nextstate;
+	'Y' 48 stk;
+	'U' 56 stksize;
+	'A' Thread 64 next;
+	'Y' 72 proc;
+	'A' Thread 80 nextt;
+	'D' 88 ret;
+	'Y' 96 cmdname;
+	'D' 104 inrendez;
+	'A' Thread 112 rendhash;
+	'Y' 120 rendtag;
+	'Y' 128 rendval;
+	'D' 136 rendbreak;
+	'D' 140 chan;
+	'A' Alt 144 alt;
+	'a' 152 udata;
 };
 
 defn
@@ -483,67 +483,67 @@ Thread(addr) {
 	print("	moribund	", addr.moribund, "\n");
 	print("	state	", addr.state, "\n");
 	print("	nextstate	", addr.nextstate, "\n");
-	print("	stk	", addr.stk\X, "\n");
+	print("	stk	", addr.stk\Y, "\n");
 	print("	stksize	", addr.stksize, "\n");
-	print("	next	", addr.next\X, "\n");
-	print("	proc	", addr.proc\X, "\n");
-	print("	nextt	", addr.nextt\X, "\n");
+	print("	next	", addr.next\Y, "\n");
+	print("	proc	", addr.proc\Y, "\n");
+	print("	nextt	", addr.nextt\Y, "\n");
 	print("	ret	", addr.ret, "\n");
-	print("	cmdname	", addr.cmdname\X, "\n");
+	print("	cmdname	", addr.cmdname\Y, "\n");
 	print("	inrendez	", addr.inrendez, "\n");
-	print("	rendhash	", addr.rendhash\X, "\n");
-	print("	rendtag	", addr.rendtag\X, "\n");
-	print("	rendval	", addr.rendval\X, "\n");
+	print("	rendhash	", addr.rendhash\Y, "\n");
+	print("	rendtag	", addr.rendtag\Y, "\n");
+	print("	rendval	", addr.rendval\Y, "\n");
 	print("	rendbreak	", addr.rendbreak, "\n");
 	print("	chan	", addr.chan, "\n");
-	print("	alt	", addr.alt\X, "\n");
+	print("	alt	", addr.alt\Y, "\n");
 	print("	udata	", addr.udata, "\n");
 };
 
-sizeofExecargs = 16;
+sizeofExecargs = 24;
 aggr Execargs
 {
-	'X' 0 prog;
-	'X' 4 args;
-	'a' 8 fd;
+	'Y' 0 prog;
+	'Y' 8 args;
+	'a' 16 fd;
 };
 
 defn
 Execargs(addr) {
 	complex Execargs addr;
-	print("	prog	", addr.prog\X, "\n");
-	print("	args	", addr.args\X, "\n");
+	print("	prog	", addr.prog\Y, "\n");
+	print("	args	", addr.args\Y, "\n");
 	print("	fd	", addr.fd, "\n");
 };
 
-sizeofProc = 2432;
+sizeofProc = 2504;
 aggr Proc
 {
 	Lock 0 lock;
 	'a' 8 sched;
-	'D' 16 pid;
-	'D' 20 splhi;
-	'A' Thread 24 thread;
-	'D' 28 needexec;
-	Execargs 32 exec;
-	'A' Proc 48 newproc;
-	'a' 52 exitstr;
-	'D' 180 rforkflag;
-	'D' 184 nthreads;
-	Tqueue 188 threads;
-	Tqueue 200 ready;
-	Lock 212 readylock;
-	'a' 220 printbuf;
-	'D' 2268 blocked;
-	'D' 2272 pending;
-	'D' 2276 nonotes;
-	'U' 2280 nextID;
-	'A' Proc 2284 next;
-	'X' 2288 arg;
-	'a' 2292 str;
-	'X' 2420 wdata;
-	'X' 2424 udata;
-	'C' 2428 threadint;
+	'D' 24 pid;
+	'D' 28 splhi;
+	'A' Thread 32 thread;
+	'D' 40 needexec;
+	Execargs 48 exec;
+	'A' Proc 72 newproc;
+	'a' 80 exitstr;
+	'D' 208 rforkflag;
+	'D' 212 nthreads;
+	Tqueue 216 threads;
+	Tqueue 240 ready;
+	Lock 264 readylock;
+	'a' 272 printbuf;
+	'D' 2320 blocked;
+	'D' 2324 pending;
+	'D' 2328 nonotes;
+	'U' 2332 nextID;
+	'A' Proc 2336 next;
+	'Y' 2344 arg;
+	'a' 2352 str;
+	'Y' 2480 wdata;
+	'Y' 2488 udata;
+	'C' 2496 threadint;
 };
 
 defn
@@ -555,12 +555,12 @@ Proc(addr) {
 	print("	sched	", addr.sched, "\n");
 	print("	pid	", addr.pid, "\n");
 	print("	splhi	", addr.splhi, "\n");
-	print("	thread	", addr.thread\X, "\n");
+	print("	thread	", addr.thread\Y, "\n");
 	print("	needexec	", addr.needexec, "\n");
 	print("Execargs exec {\n");
 	Execargs(addr.exec);
 	print("}\n");
-	print("	newproc	", addr.newproc\X, "\n");
+	print("	newproc	", addr.newproc\Y, "\n");
 	print("	exitstr	", addr.exitstr, "\n");
 	print("	rforkflag	", addr.rforkflag, "\n");
 	print("	nthreads	", addr.nthreads, "\n");
@@ -578,20 +578,20 @@ Proc(addr) {
 	print("	pending	", addr.pending, "\n");
 	print("	nonotes	", addr.nonotes, "\n");
 	print("	nextID	", addr.nextID, "\n");
-	print("	next	", addr.next\X, "\n");
-	print("	arg	", addr.arg\X, "\n");
+	print("	next	", addr.next\Y, "\n");
+	print("	arg	", addr.arg\Y, "\n");
 	print("	str	", addr.str, "\n");
-	print("	wdata	", addr.wdata\X, "\n");
-	print("	udata	", addr.udata\X, "\n");
+	print("	wdata	", addr.wdata\Y, "\n");
+	print("	udata	", addr.udata\Y, "\n");
 	print("	threadint	", addr.threadint, "\n");
 };
 
-sizeofPqueue = 16;
+sizeofPqueue = 24;
 aggr Pqueue
 {
 	Lock 0 lock;
 	'A' Proc 8 $head;
-	'A' Proc 12 $tail;
+	'A' Proc 16 $tail;
 };
 
 defn
@@ -600,36 +600,36 @@ Pqueue(addr) {
 	print("Lock lock {\n");
 	Lock(addr.lock);
 	print("}\n");
-	print("	$head	", addr.$head\X, "\n");
-	print("	$tail	", addr.$tail\X, "\n");
+	print("	$head	", addr.$head\Y, "\n");
+	print("	$tail	", addr.$tail\Y, "\n");
 };
 
-sizeofIoproc = 160;
+sizeofIoproc = 192;
 aggr Ioproc
 {
 	'D' 0 tid;
-	'A' Channel 4 c;
-	'A' Channel 8 creply;
-	'D' 12 inuse;
-	'X' 16 op;
-	'X' 20 arg;
-	'D' 24 ret;
-	'a' 28 err;
-	'A' Ioproc 156 next;
+	'A' Channel 8 c;
+	'A' Channel 16 creply;
+	'D' 24 inuse;
+	'Y' 32 op;
+	'Y' 40 arg;
+	'D' 48 ret;
+	'a' 52 err;
+	'A' Ioproc 184 next;
 };
 
 defn
 Ioproc(addr) {
 	complex Ioproc addr;
 	print("	tid	", addr.tid, "\n");
-	print("	c	", addr.c\X, "\n");
-	print("	creply	", addr.creply\X, "\n");
+	print("	c	", addr.c\Y, "\n");
+	print("	creply	", addr.creply\Y, "\n");
 	print("	inuse	", addr.inuse, "\n");
-	print("	op	", addr.op\X, "\n");
-	print("	arg	", addr.arg\X, "\n");
+	print("	op	", addr.op\Y, "\n");
+	print("	arg	", addr.arg\Y, "\n");
 	print("	ret	", addr.ret, "\n");
 	print("	err	", addr.err, "\n");
-	print("	next	", addr.next\X, "\n");
+	print("	next	", addr.next\Y, "\n");
 };
 
 complex Pqueue _threadpq;
