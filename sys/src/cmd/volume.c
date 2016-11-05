@@ -10,7 +10,7 @@ Image *rim;
 
 Point
 volumept(Point c, int volume, int r) {
-	double rad = (double) (((volume-50)*2.0)*3.0+30) * PI/180.0;
+	double rad = (double) ((volume*3.0+30) * PI/180.0;
 
 	c.x -= sin(rad) * r;
 	c.y += cos(rad) * r;
@@ -27,7 +27,7 @@ redraw(Image *screen)
 
 	draw(screen, screen->r, back, nil, ZP);
 	
-	line(screen, volumept(c, 50, r+5), volumept(c, 50, r), 0, 0, 1, display->black, ZP);
+	line(screen, volumept(c, 0, r+5), volumept(c, 0, r), 0, 0, 1, display->black, ZP);
 	line(screen, volumept(c, 100, r+5), volumept(c, 100, r), 0, 0, 1, display->black, ZP);
 	ellipse(screen, c, r, r, 1, rim, ZP);
 	fillellipse(screen, volumept(c, volume, r-10), 3, 3, knob, ZP);
@@ -92,11 +92,11 @@ main()
 					d += 360;
 
 				if (d < 30)
-					volume = 50;
+					volume = 0;
 				else if (d > 330)
 					volume = 100;
 				else
-					volume = 50 + (((d-30)/300.0)*50.0);
+					volume = ((d-30)/300.0)*100.0;
 
 				fprint (f, "%d\n", volume);
 
