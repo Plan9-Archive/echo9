@@ -10,7 +10,7 @@ Image *rim;
 
 Point
 volumept(Point c, int volume, int r) {
-	double rad = (double) ((volume*3.0+30) * PI/180.0;
+	double rad = (double) (volume*3.0+30) * PI/180.0;
 
 	c.x -= sin(rad) * r;
 	c.y += cos(rad) * r;
